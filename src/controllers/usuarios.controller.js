@@ -4,16 +4,17 @@ import bcrypt from "bcryptjs"
 // controlador.js
 import { queries } from '../database/querys';
 // Función para obtener todos los usuarios
-export async function obtenerTodosLosUsuarios() {
+export async function obtenerTodosLosUsuarios(req, res) {
     try {
         const connection = await getConnection();
         const [rows] = await connection.execute(queries.ObtenerTodosLosUsuarios);
-        return rows;
+        res.json(rows); // Enviar los usuarios como respuesta en formato JSON
     } catch (error) {
         console.error('Error al obtener todos los usuarios:', error);
-        throw error;
+        res.status(500).json({ error: 'Error al obtener todos los usuarios' }); // Enviar una respuesta de error en caso de fallo
     }
 }
+
 
 
 export const Login = async (req, res) => {
