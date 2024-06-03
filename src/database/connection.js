@@ -1,20 +1,16 @@
 import mysql from 'mysql2/promise';
-import config from '../config'
-const dbsettings = {
+import config from '../config';
+
+const dbSettings = {
     host: config.dbServer,
     user: config.dbUser,
     password: config.dbPassword,
-    database: config.dbDataBase
+    database: config.dbDataBase,
+    waitForConnections: true,
+    connectionLimit: 10, // Puedes ajustar este valor según tus necesidades
+    queueLimit: 0
 };
 
-export async function getConnection() {
-    try {
-        const connection = await mysql.createConnection(dbsettings);
-        return connection;
-    } catch (error) {
-        console.error("Error de conexión a la base de datos: ", error);
-    }
-}
+const pool = mysql.createPool(dbSettings);
 
-
-export {mysql};
+export default pool;
